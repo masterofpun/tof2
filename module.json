@@ -1,5 +1,6 @@
 {
   "id": "2t2f",
+  "name": "2t2f",
   "title": "2t2f cards",
   "description": "",
   "version": "#{VERSION}#",
@@ -8,7 +9,7 @@
   "manifestPlusVersion": "1.2.0",
   "compatibility": {
     "minimum": 10,
-    "verified": 10,
+    "verified": 11,
     "maximum": 11
   },
   "authors": [
