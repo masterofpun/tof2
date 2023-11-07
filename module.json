@@ -19,7 +19,12 @@
   ],
   "relationships": {
     "systems": [],
-    "requires": ["socketlib"]
+    "requires": [
+        {
+            "id": "socketlib",
+            "type": "module"
+        }
+    ]
   },
   "esmodules": [
     "scripts/module.js"
