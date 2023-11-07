@@ -1,8 +1,622 @@
 <!DOCTYPE html>
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Foundry VTT API </title>
-<script src="../../scripts/socket.io.min.js"></script>
-<script src="api.js" type="text/javascript"></script>
-</head>
-<body></body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>D&D Character Card</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: green;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+      }
+
+      .character-card {
+        width: 600px;
+        filter: grayscale(0.8);
+        transition: 0.2s;
+      }
+
+      .character-card.active {
+        filter: grayscale(0);
+      }
+
+      .shadow {
+        filter: drop-shadow(1px 2px 0px #0005);
+      }
+
+      #inserted-image {
+        background-size: cover;
+        border-radius: 200px;
+        position: absolute;
+        left: 34px;
+        height: 256px;
+        width: 256px;
+        z-index: 1;
+        top: 69px;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+      #character-name {
+        position: absolute;
+        top: 294px;
+        left: 72px;
+        z-index: 1;
+        border-radius: 16px;
+        border: solid 2px gold;
+        padding: 0.2em 0.7em;
+        background-color: var(--primary-color, #01375b);
+        color: white;
+        font-size: 1.2em;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        filter: drop-shadow(1px 2px 0px #0005);
+      }
+
+      #class {
+        font-weight: bold;
+        opacity: 0.75;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="user-cards"></div>
+    <div class="template">
+      <div class="character-card active">
+        <?xml version="1.0" encoding="utf-8"?>
+        <!-- Generator: Adobe Illustrator 28.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+        <svg
+          version="1.1"
+          id="Layer_1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          x="0px"
+          y="0px"
+          viewBox="0 0 304 200"
+          style="enable-background: new 0 0 304 200"
+          xml:space="preserve"
+        >
+          <style type="text/css">
+            .st0 {
+              clip-path: url(#SVGID_00000056387039922328828140000008325461041990619324_);
+            }
+
+            .st1 {
+              fill: url(#SVGID_00000150062787757671926300000006030906084739170437_);
+              stroke: #70683a;
+              stroke-width: 0.25;
+              stroke-miterlimit: 10;
+            }
+
+            .st2 {
+              fill: url(#SVGID_00000066509113456248749340000004063291846840865933_);
+              stroke: #70683a;
+              stroke-width: 0.25;
+              stroke-miterlimit: 10;
+            }
+
+            .st3 {
+              opacity: 0.65;
+              clip-path: url(#SVGID_00000049910155428535870970000009255659985730713515_);
+              fill: var(--primary-color, #01375b);
+              enable-background: new;
+            }
+            .st4 {
+              fill: none;
+              stroke: #4f4f4f;
+              stroke-width: 0.25;
+              stroke-miterlimit: 10;
+            }
+
+            .st5 {
+              fill: url(#SVGID_00000032606647091779319180000012684705508212352653_);
+              stroke: #70683a;
+              stroke-width: 0.25;
+              stroke-miterlimit: 10;
+            }
+
+            .st6 {
+              fill: url(#SVGID_00000096032205504358174110000013151247548647450809_);
+              stroke: #70683a;
+              stroke-width: 0.25;
+              stroke-miterlimit: 10;
+            }
+
+            .st7 {
+              opacity: 0.65;
+              clip-path: url(#SVGID_00000170237119880052995270000004045508894273283762_);
+              fill: var(--primary-color, #01375b);
+              enable-background: new;
+            }
+            .st8 {
+              opacity: 0.65;
+              fill: var(--primary-color, #01375b);
+              enable-background: new;
+            }
+            .st9 {
+              fill: #ffffff;
+            }
+            .st10 {
+              font-family: "Roboto-Regular";
+            }
+            .st11 {
+              font-size: 16px;
+            }
+            .st12 {
+              letter-spacing: 16;
+            }
+            .st13 {
+              letter-spacing: 12;
+            }
+            .st14 {
+              fill: none;
+              stroke: url(#photo_00000157284572163007896310000013561051594615717817_);
+              stroke-width: 3;
+              stroke-miterlimit: 10;
+            }
+            .st15 {
+              fill: none;
+              stroke: url(#frame_00000123440294226374467470000006761106162507156641_);
+              stroke-width: 3;
+              stroke-miterlimit: 10;
+            }
+            .st16 {
+              font-size: 17px;
+            }
+            .st17 {
+              font-family: "ArialMT";
+            }
+            .st18 {
+              font-size: 12px;
+            }
+            .st19 {
+              fill: var(--primary-color, #01375b);
+            }
+            .st20 {
+              font-size: 10px;
+            }
+          </style>
+          <g id="background_clip">
+            <g>
+              <defs>
+                <path
+                  id="SVGID_1_"
+                  d="M299.6,200H4.3c-2.4,0-4.3-1.9-4.3-4.4V4.3C0,2,2,0,4.3,0h295.3c2.4,0,4.4,2,4.4,4.3v191.3
+                              C304,198.1,302,200,299.6,200z"
+                />
+              </defs>
+              <clipPath
+                id="SVGID_00000000938236806762364630000015726351587482836637_"
+              >
+                <use xlink:href="#SVGID_1_" style="overflow: visible" />
+              </clipPath>
+              <g
+                style="
+                  clip-path: url(#SVGID_00000000938236806762364630000015726351587482836637_);
+                "
+              >
+                <image
+                  style="overflow: visible; enable-background: new"
+                  width="3820"
+                  height="2546"
+                  xlink:href="EC889AFB.jpeg"
+                  transform="matrix(0.1049 0 0 0.1049 0 -22)"
+                ></image>
+              </g>
+            </g>
+          </g>
+          <g>
+            <g id="top_bars">
+              <linearGradient
+                id="SVGID_00000163785525864162100740000010918811139549446281_"
+                gradientUnits="userSpaceOnUse"
+                x1="137.4313"
+                y1="123.2989"
+                x2="204.9248"
+                y2="240.2011"
+                gradientTransform="matrix(1 0 0 -1 0 200)"
+              >
+                <stop offset="5.618000e-03" style="stop-color: #fbc926" />
+                <stop offset="0.2528" style="stop-color: #fffbcc" />
+                <stop offset="0.3045" style="stop-color: #f8f0bb" />
+                <stop offset="0.4072" style="stop-color: #e7d28e" />
+                <stop offset="0.55" style="stop-color: #cca246" />
+                <stop offset="0.5955" style="stop-color: #c3922e" />
+                <stop offset="0.8708" style="stop-color: #eed688" />
+                <stop offset="1" style="stop-color: #fffbcc" />
+              </linearGradient>
+
+              <polygon
+                style="
+                  fill: url(#SVGID_00000163785525864162100740000010918811139549446281_);
+                  stroke: #70683a;
+                  stroke-width: 0.25;
+                  stroke-miterlimit: 10;
+                "
+                points="
+                          304,19 37.5,19 40.8,17 304,17 		"
+              />
+
+              <linearGradient
+                id="SVGID_00000174603537248153395410000004418386518465857715_"
+                gradientUnits="userSpaceOnUse"
+                x1="134.7187"
+                y1="119.3592"
+                x2="202.8643"
+                y2="237.3908"
+                gradientTransform="matrix(1 0 0 -1 0 200)"
+              >
+                <stop offset="5.618000e-03" style="stop-color: #fbc926" />
+                <stop offset="0.2528" style="stop-color: #fffbcc" />
+                <stop offset="0.3045" style="stop-color: #f8f0bb" />
+                <stop offset="0.4072" style="stop-color: #e7d28e" />
+                <stop offset="0.55" style="stop-color: #cca246" />
+                <stop offset="0.5955" style="stop-color: #c3922e" />
+                <stop offset="0.8708" style="stop-color: #eed688" />
+                <stop offset="1" style="stop-color: #fffbcc" />
+              </linearGradient>
+
+              <polygon
+                style="
+                  fill: url(#SVGID_00000174603537248153395410000004418386518465857715_);
+                  stroke: #70683a;
+                  stroke-width: 0.25;
+                  stroke-miterlimit: 10;
+                "
+                points="
+                          304,22 33.2,22 34.7,21 304,21 		"
+              />
+            </g>
+            <g id="top_shoe" class="shadow">
+              <g>
+                <g>
+                  <defs>
+                    <path
+                      id="SVGID_00000102534275125460248100000010719772952392426666_"
+                      d="M46.5,9.1c2.3,0,3.1,3.1,1,4.2
+                                      c-6.6,3.3-15.4,8.5-22.3,15.5C19.5,34.6,15.6,41,13,46.2c-1,2.1-4.2,1.3-4.2-1V12.7c0-2,1.6-3.6,3.6-3.6L46.5,9.1z"
+                    />
+                  </defs>
+                  <clipPath
+                    id="SVGID_00000065059352925670757770000010852374020319483029_"
+                  >
+                    <use
+                      xlink:href="#SVGID_00000102534275125460248100000010719772952392426666_"
+                      style="overflow: visible"
+                    />
+                  </clipPath>
+
+                  <polygon
+                    style="
+                      opacity: 0.65;
+                      clip-path: url(#SVGID_00000065059352925670757770000010852374020319483029_);
+                      fill: var(--primary-color, #01375b);
+                      enable-background: new;
+                    "
+                    points="
+                                  53.8,10.9 8.8,52 8.8,8 53.8,8 				"
+                  />
+                </g>
+                <g>
+                  <path
+                    id="SVGID_00000106139039914776959330000015290432601887458490_"
+                    class="st4"
+                    d="M46.5,9.1c2.3,0,3.1,3.1,1,4.2
+                                  c-6.6,3.3-15.4,8.5-22.3,15.5C19.5,34.6,15.6,41,13,46.2c-1,2.1-4.2,1.3-4.2-1V12.7c0-2,1.6-3.6,3.6-3.6L46.5,9.1z"
+                  />
+                </g>
+              </g>
+            </g>
+          </g>
+          <g>
+            <g id="bottom_bars">
+              <linearGradient
+                id="SVGID_00000181076175469632983190000010295793221406940546_"
+                gradientUnits="userSpaceOnUse"
+                x1="137.4313"
+                y1="-7.4909"
+                x2="204.9248"
+                y2="109.4113"
+                gradientTransform="matrix(1 0 0 1 0 132.1298)"
+              >
+                <stop offset="5.618000e-03" style="stop-color: #fbc926" />
+                <stop offset="0.2528" style="stop-color: #fffbcc" />
+                <stop offset="0.3045" style="stop-color: #f8f0bb" />
+                <stop offset="0.4072" style="stop-color: #e7d28e" />
+                <stop offset="0.55" style="stop-color: #cca246" />
+                <stop offset="0.5955" style="stop-color: #c3922e" />
+                <stop offset="0.8708" style="stop-color: #eed688" />
+                <stop offset="1" style="stop-color: #fffbcc" />
+              </linearGradient>
+
+              <polygon
+                style="
+                  fill: url(#SVGID_00000181076175469632983190000010295793221406940546_);
+                  stroke: #70683a;
+                  stroke-width: 0.25;
+                  stroke-miterlimit: 10;
+                "
+                points="
+                          304,182.3 37.5,182.3 40.8,184.3 304,184.3 		"
+              />
+
+              <linearGradient
+                id="SVGID_00000079448857309499383170000015066451641793152431_"
+                gradientUnits="userSpaceOnUse"
+                x1="134.7187"
+                y1="-11.4306"
+                x2="202.8643"
+                y2="106.601"
+                gradientTransform="matrix(1 0 0 1 0 132.1298)"
+              >
+                <stop offset="5.618000e-03" style="stop-color: #fbc926" />
+                <stop offset="0.2528" style="stop-color: #fffbcc" />
+                <stop offset="0.3045" style="stop-color: #f8f0bb" />
+                <stop offset="0.4072" style="stop-color: #e7d28e" />
+                <stop offset="0.55" style="stop-color: #cca246" />
+                <stop offset="0.5955" style="stop-color: #c3922e" />
+                <stop offset="0.8708" style="stop-color: #eed688" />
+                <stop offset="1" style="stop-color: #fffbcc" />
+              </linearGradient>
+
+              <polygon
+                style="
+                  fill: url(#SVGID_00000079448857309499383170000015066451641793152431_);
+                  stroke: #70683a;
+                  stroke-width: 0.25;
+                  stroke-miterlimit: 10;
+                "
+                points="
+                          304,179.3 33.2,179.3 34.7,180.3 304,180.3 		"
+              />
+            </g>
+            <g id="bottom_shoe" class="shadow">
+              <g>
+                <g>
+                  <defs>
+                    <path
+                      id="SVGID_00000054963209176055975450000013936790018425187203_"
+                      d="M46.5,192.2c2.3,0,3.1-3.1,1-4.2
+                                      c-6.6-3.3-15.4-8.5-22.3-15.5c-5.8-5.9-9.7-12.3-12.3-17.5c-1-2.1-4.2-1.3-4.2,1v32.6c0,2,1.6,3.6,3.6,3.6L46.5,192.2z"
+                    />
+                  </defs>
+                  <clipPath
+                    id="SVGID_00000166641620567250875590000010538917452340223159_"
+                  >
+                    <use
+                      xlink:href="#SVGID_00000054963209176055975450000013936790018425187203_"
+                      style="overflow: visible"
+                    />
+                  </clipPath>
+
+                  <polygon
+                    style="
+                      opacity: 0.65;
+                      clip-path: url(#SVGID_00000166641620567250875590000010538917452340223159_);
+                      fill: var(--primary-color, #01375b);
+                      enable-background: new;
+                    "
+                    points="
+                                  53.8,190.4 8.8,149.3 8.8,193.4 53.8,193.4 				"
+                  />
+                </g>
+                <g>
+                  <path
+                    id="SVGID_00000168802522800099996190000009319846677477456532_"
+                    class="st4"
+                    d="M46.5,192.2c2.3,0,3.1-3.1,1-4.2
+                                  c-6.6-3.3-15.4-8.5-22.3-15.5c-5.8-5.9-9.7-12.3-12.3-17.5c-1-2.1-4.2-1.3-4.2,1v32.6c0,2,1.6,3.6,3.6,3.6L46.5,192.2z"
+                  />
+                </g>
+              </g>
+            </g>
+          </g>
+          <g id="Stats_Wrapp">
+            <polygon
+              id="stat_box"
+              class="st8"
+              points="304,88.9 150,88.9 141.8,70 304,70 	"
+            />
+
+            <rect
+              id="stat_box_00000074428757635730167020000003777889890611667641_"
+              x="150"
+              y="90.6"
+              class="st8"
+              width="154"
+              height="18.9"
+            />
+            <polygon
+              id="stat_box_00000088100157313186251300000004604318086226088124_"
+              class="st8"
+              points="304,130 143.5,130 149.9,111.1 
+                      304,111.1 	"
+            />
+
+            <text
+              transform="matrix(1 0 0 1 163.8698 84.8262)"
+              class="st9 st10 st11"
+              id="STR"
+            ></text>
+            <text
+              transform="matrix(1 0 0 1 214.6898 84.8262)"
+              class="st9 st10 st11 st12"
+            ></text>
+            <text
+              transform="matrix(1 0 0 1 235.8698 84.8262)"
+              class="st9 st10 st11"
+              id="INT"
+            ></text>
+            <text
+              transform="matrix(1 0 0 1 163.8698 105.8262)"
+              class="st9 st10 st11"
+              id="DEX"
+            ></text>
+            <text
+              transform="matrix(1 0 0 1 215.4198 105.8262)"
+              class="st9 st10 st11 st12"
+            ></text>
+            <text
+              transform="matrix(1 0 0 1 235.8698 105.8262)"
+              class="st9 st10 st11"
+              id="WIS"
+            ></text>
+            <text
+              transform="matrix(1 0 0 1 163.8698 126.8262)"
+              class="st9 st10 st11"
+              id="CON"
+            ></text>
+            <text
+              transform="matrix(1 0 0 1 218.6198 126.8262)"
+              class="st9 st10 st11 st13"
+            ></text>
+            <text
+              transform="matrix(1 0 0 1 235.8698 126.8262)"
+              class="st9 st10 st11"
+              id="CHA"
+            ></text>
+          </g>
+          <g id="Photo_frame" class="shadow">
+            <circle
+              id="photo_background_tint"
+              class="st8"
+              cx="81.7"
+              cy="100.1"
+              r="67.4"
+            />
+
+            <linearGradient
+              id="frame_00000174593551116779690310000012728999275340159631_"
+              gradientUnits="userSpaceOnUse"
+              x1="47.3194"
+              y1="40.4351"
+              x2="116.2606"
+              y2="159.8449"
+              gradientTransform="matrix(1 0 0 -1 0 200)"
+            >
+              <stop offset="5.618000e-03" style="stop-color: #fbc926" />
+              <stop offset="0.2528" style="stop-color: #fffbcc" />
+              <stop offset="0.3045" style="stop-color: #f8f0bb" />
+              <stop offset="0.4072" style="stop-color: #e7d28e" />
+              <stop offset="0.55" style="stop-color: #cca246" />
+              <stop offset="0.5955" style="stop-color: #c3922e" />
+              <stop offset="0.8708" style="stop-color: #eed688" />
+              <stop offset="1" style="stop-color: #fffbcc" />
+            </linearGradient>
+
+            <circle
+              id="frame"
+              style="
+                fill: none;
+                stroke: url(#frame_00000174593551116779690310000012728999275340159631_);
+                stroke-width: 3;
+                stroke-miterlimit: 10;
+              "
+              cx="81.8"
+              cy="99.9"
+              r="67.4"
+            />
+          </g>
+          <g id="AC_Stat_Block">
+            <path
+              id="Shield"
+              class="shadow st8"
+              d="M201.8,49.3V36.3c0-0.5-0.3-1-0.7-1.3l-15.2-9.5c-0.5-0.3-1.1-0.3-1.6,0L168.9,35
+                      c-0.4,0.3-0.7,0.8-0.7,1.3v13c0,4.5,2.3,8.7,6.1,11L185,67l10.7-6.7C199.5,57.9,201.8,53.8,201.8,49.3z"
+            />
+            <text
+              transform="matrix(1 0 0 1 176 50.5)"
+              class="st9 st10 st16"
+              id="AC-stat"
+            >
+              AC
+            </text>
+          </g>
+          <g>
+            <g>
+              <path
+                class="shadow st8"
+                d="M282.3,28.8c-2.5-2.5-5.8-3.9-9.3-3.9s-6.8,1.4-9.3,3.9l-1.3,1.3l-1.3-1.3c-2.5-2.5-5.8-3.9-9.3-3.9
+                          c-3.5,0-6.8,1.4-9.3,3.9c-2.5,2.5-3.9,5.8-3.9,9.3c0,3.5,1.4,6.8,3.9,9.3l18.9,18.9c0.3,0.3,0.6,0.4,1,0.4s0.7-0.1,1-0.4l19-18.9
+                          c2.5-2.5,3.9-5.8,3.9-9.3C286.2,34.6,284.8,31.2,282.3,28.8z"
+              />
+            </g>
+            <text
+              transform="matrix(1 0 0 1 250 50.5)"
+              class="st9 st17 st16"
+              id="HP-stat"
+            >
+              HP
+            </text>
+          </g>
+          <g id="levels_block">
+            <text
+              id="class"
+              transform="matrix(1 0 0 1 290 164)"
+              class="st10 st18"
+              text-anchor="end"
+            >
+              Warlock/Sorcerer
+            </text>
+            <text
+              id="level"
+              transform="matrix(1 0 0 1 290 154)"
+              class="st19 st10 st20"
+              text-anchor="end"
+            >
+              Level 3
+            </text>
+          </g>
+        </svg>
+
+        <div class="photo" id="inserted-image"></div>
+        <div id="character-name">Nameguy Nameson [he/him]</div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script>
+      function pad(str, max) {
+        str = str.toString();
+        return str.length < max ? pad(" " + str, max) : str;
+      }
+      $.urlParam = function (name) {
+        var results = new RegExp("[\?&]" + name + "=([^&]*)").exec(
+          window.location.href
+        );
+        if (results == null) {
+          return null;
+        }
+        return decodeURI(results[1]) || 0;
+      };
+    </script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"
+      integrity="sha512-Xm9qbB6Pu06k3PUwPj785dyTl6oHxgsv9nHp7ej7nCpAqGZT3OZpsELuCYX05DdonFpTlBpXMOxjavIAIUwr0w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="api.js" type="text/javascript"></script>
+  </body>
 </html>

@@ -20,9 +20,27 @@ class APIModule {
     error(message) {
         this.reply({success: false, error: message});
     }
+
     reply(result) {
         const body = document.getElementsByTagName("body")[0];
-        body.textContent = JSON.stringify(result);
+        const card = $(".template .character-card");
+        console.log(card)
+        console.log(result);
+        $("body").get(0).style.setProperty("--primary-color", $.urlParam('color'));
+        $('#character-name').text($.urlParam('name'));
+        $('#class').text($.urlParam('class'));
+        $('#level').text('Level '+$.urlParam('level'));
+        $('#character-name').text($.urlParam('name'));
+        $('#character-name').css('background-color', $.urlParam('color'));
+        $('#AC-stat').text($.urlParam('ac'));
+        $('#HP-stat').text(String('  ' + $.urlParam('hp')).slice(-3));
+        $('#STR').text('STR ' + String('  ' + $.urlParam('str')).slice(-2));
+        $('#DEX').text('DEX ' + String('  ' + $.urlParam('dex')).slice(-2));
+        $('#CON').text('CON ' + String('  ' + $.urlParam('con')).slice(-2));
+        $('#INT').text('INT ' + String('  ' + $.urlParam('int')).slice(-2));
+        $('#WIS').text('WIS ' + String('  ' + $.urlParam('wis')).slice(-2));
+        $('#CHA').text('CHA ' + String('  ' + $.urlParam('cha')).slice(-2));
+        $('#inserted-image').css('background-image', 'url("'+$.urlParam('image')+'")');
         this.socket.close();
     }
 
@@ -47,8 +65,8 @@ class APIModule {
             return this.error("Error parsing query string")
         }
 
-        if (params.name === undefined)
-            return this.error("API use requires query string 'name'")
+        //if (params.name === undefined)
+        //    return this.error("API use requires query string 'name'")
         let args = [];
         for (let i = 0; i < 10; i++ ) {
             if (params[`arg${i}`] !== undefined)
@@ -57,7 +75,7 @@ class APIModule {
                 break;
         }
         console.log("Got request with params : ", params, args)
-        this.socket.emit(params.name, ...args, (...args) => {
+        this.socket.emit('world', ...args, (...args) => {
             return this.reply({query: params, result: args, success: true})
         });
     }
