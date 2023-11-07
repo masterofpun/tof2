@@ -1,6 +1,6 @@
 {
-  "id": "2t2f",
-  "title": "2t2f tokens",
+  "id": "module",
+  "title": "New Module",
   "description": "",
   "version": "#{VERSION}#",
   "library": "false",
@@ -12,19 +12,14 @@
   },
   "authors": [
     {
-      "name": "Naina",
-      "url": "https://github.com/masterofpun/tof2",
-      "discord": "nainaaa"
+      "name": "The League of Extraordinary FVTT Developers",
+      "url": "https://github.com/League-of-Foundry-Developers",
+      "discord": "discordID#0001"
     }
   ],
   "relationships": {
     "systems": [],
-    "requires": [
-        {
-            "id": "socketlib",
-            "type": "module"
-        }
-    ]
+    "requires": []
   },
   "esmodules": [
     "scripts/module.js"
