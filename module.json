@@ -4,6 +4,7 @@
   "description": "",
   "version": "#{VERSION}#",
   "library": "false",
+  "socket":true,
   "manifestPlusVersion": "1.2.0",
   "compatibility": {
     "minimum": 10,
