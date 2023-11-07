@@ -19,7 +19,12 @@
   ],
   "relationships": {
     "systems": [],
-    "requires": []
+    "requires": [
+        {
+            "id": "socketlib",
+            "type": "module"
+        }
+    ]
   },
   "esmodules": [
     "scripts/module.js"
@@ -30,13 +35,7 @@
   "styles": [
     "styles/module.css"
   ],
-  "languages": [
-    {
-      "lang": "en",
-      "name": "English",
-      "path": "languages/en.json"
-    }
-  ],
+  "languages": [],
   "url": "#{URL}#",
   "manifest": "#{MANIFEST}#",
   "download": "#{DOWNLOAD}#",
