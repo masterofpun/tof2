@@ -1,7 +1,7 @@
 let socket;
 
 Hooks.once("socketlib.ready", () => {
-	socket = socketlib.registerModule("my-module");
+	socket = socketlib.registerModule("2t2f");
 	socket.register("hello", showHelloMessage);
 	socket.register("add", add);
 });
