@@ -62,7 +62,7 @@ class APIModule {
             .st3 {
               opacity: 0.65;
               clip-path: url(#SVGID_00000049910155428535870970000009255659985730713515_);
-              fill: <primary-color>;
+              fill: primary-color;
               enable-background: new;
             }
             .st4 {
@@ -89,12 +89,12 @@ class APIModule {
             .st7 {
               opacity: 0.65;
               clip-path: url(#SVGID_00000170237119880052995270000004045508894273283762_);
-              fill: <primary-color>;
+              fill: primary-color;
               enable-background: new;
             }
             .st8 {
               opacity: 0.65;
-              fill: <primary-color>;
+              fill: primary-color;
               enable-background: new;
             }
             .st9 {
@@ -134,10 +134,10 @@ class APIModule {
               font-size: 12px;
             }
             .st19 {
-              fill: <primary-color>;
+              fill: primary-color;
             }
             .st20 {
-              font-size: 10px;
+              font-size: 14px;
             }
           </style>
           <g id="background_clip">
@@ -254,7 +254,7 @@ class APIModule {
                     style="
                       opacity: 0.65;
                       clip-path: url(#SVGID_00000065059352925670757770000010852374020319483029_);
-                      fill: <primary-color>;
+                      fill: primary-color;
                       enable-background: new;
                     "
                     points="
@@ -357,7 +357,7 @@ class APIModule {
                     style="
                       opacity: 0.65;
                       clip-path: url(#SVGID_00000166641620567250875590000010538917452340223159_);
-                      fill: <primary-color>;
+                      fill: primary-color;
                       enable-background: new;
                     "
                     points="
@@ -506,7 +506,7 @@ class APIModule {
               />
             </g>
             <text
-              transform="matrix(1 0 0 1 250 50.5)"
+              transform="matrix(1 0 0 1 252 50.5)"
               class="st9 st17 st16"
               id="HP-stat"
             >
@@ -537,40 +537,42 @@ class APIModule {
         <div id="character-name">Nameguy Nameson [he/him]</div>
         </div>`
         actors.forEach(actor => {
-            template = template.replace('<primary-color>', '#01375b');
+            template = template.replaceAll('primary-color', '#220022');
             var race_and_class = actor['system']['details']['race'] + ' ';
             var levels = 0;
             var ac = 0;
             actor['items'].forEach(item => {
                 if(item['type'] == 'class') {
-                    race_and_class.append(item['name'] + ' ');
+                    race_and_class += item['name'] + ' ';
                     levels += item['system']['levels'];
                 }
 
-                if(item['type'] == 'equipment' && item['equipped']) {
+                if(item['type'] == 'equipment' && item['system']['equipped']) {
                     ac += item['system']['armor']['value'];
                 }
             });
             var hp = actor['system']['attributes']['hp']['value'];
             if(actor['system']['attributes']['hp']['value']) {
-                hp = hp + '|' + actor['system']['attributes']['hp']['temp'];
+                hp = hp + actor['system']['attributes']['hp']['temp'];
             }
-            $(template).find('#class').text(race_and_class.trim());
-            $(template).find('#level').text('Level ' + levels);
-            $(template).find('#character-name').text(actor['prototypeToken']['name']);
-            $(template).find('#character-name').css('background-color', '#01375b');
-            $(template).find('#AC-stat').text(ac);
-            $(template).find('#HP-stat').text(String('  ' + hp).slice(-3));
-            $(template).find('#STR').text('STR ' + String('  ' + actor['system']['abilities']['str']['value']).slice(-2));
-            $(template).find('#DEX').text('DEX ' + String('  ' + actor['system']['abilities']['dex']['value']).slice(-2));
-            $(template).find('#CON').text('CON ' + String('  ' + actor['system']['abilities']['con']['value']).slice(-2));
-            $(template).find('#INT').text('INT ' + String('  ' + actor['system']['abilities']['int']['value']).slice(-2));
-            $(template).find('#WIS').text('WIS ' + String('  ' + actor['system']['abilities']['wis']['value']).slice(-2));
-            $(template).find('#CHA').text('CHA ' + String('  ' + actor['system']['abilities']['cha']['value']).slice(-2));
-            var token_url = actor['prototypeToken']['texture']['src'];
-            $(template).find('#inserted-image').css('background-image', 'url("'+token_url+'")');
-
-            $('.user-cards').append(template);
+            $('#template').html(template);
+            $('#template').find('#class').text(race_and_class.trim());
+            $('#template').find('#level').text('Level ' + levels);
+            $('#template').find('#character-name').text(actor['prototypeToken']['name']);
+            $('#template').find('#character-name').css('background-color', '#220022');
+            $('#template').find('#AC-stat').text(ac);
+            $('#template').find('#HP-stat').text(String('  ' + hp).slice(-3));
+            $('#template').find('#STR').text('STR ' + String('  ' + actor['system']['abilities']['str']['value']).slice(-2));
+            $('#template').find('#DEX').text('DEX ' + String('  ' + actor['system']['abilities']['dex']['value']).slice(-2));
+            $('#template').find('#CON').text('CON ' + String('  ' + actor['system']['abilities']['con']['value']).slice(-2));
+            $('#template').find('#INT').text('INT ' + String('  ' + actor['system']['abilities']['int']['value']).slice(-2));
+            $('#template').find('#WIS').text('WIS ' + String('  ' + actor['system']['abilities']['wis']['value']).slice(-2));
+            $('#template').find('#CHA').text('CHA ' + String('  ' + actor['system']['abilities']['cha']['value']).slice(-2));
+            var token_url = '/'+actor['prototypeToken']['texture']['src'];
+            $('#template').find('#inserted-image').css('background-image', 'url("'+token_url+'")');
+            $('#template').find('.character-card').css('transform', 'scale(0.9)');
+            $('.user-cards').append($('#template').html());
+            $('#template').empty();
         });
         
         this.socket.close();
