@@ -10,7 +10,11 @@ Hooks.once('init', async function() {
     console.log('2t2f initialised');
 });
 
-Hooks.once("ready", async () => {
+Hooks.once('hello2t2f', async function() {
+    console.log('2t2f recieves');
+});
+
+Hooks.on("ready", async () => {
 	// Let's send a greeting to all other connected users.
 	// Functions can either be called by their given name...
 	socket.executeForEveryone("hello", game.user.name);
@@ -21,6 +25,7 @@ Hooks.once("ready", async () => {
 	const result = await socket.executeAsGM("add", 5, 3);
 	console.log(`The GM client calculated: ${result}`);
 });
+
 
 function showHelloMessage(userName) {
 	console.log(`User ${userName} says hello!`);
