@@ -18,15 +18,16 @@
 
       .character-card {
         width: 400px;
-        filter: grayscale(0.8) drop-shadow(0 2px 4px black);
-        transition: 0.2s;
+        filter: saturate(0.4) contrast(0.75) drop-shadow(0 2px 4px black);
+        transition: 0.4s;
         transform: scale(0.98);
+        display: inline-block;
+        margin: 1em;
       }
 
       .character-card.active {
-        filter: grayscale(0) drop-shadow(0 2px 4px black);
-        display: inline-block;
-        margin: 1em;
+        transition: 0.4s;
+        filter: saturate(1) drop-shadow(0 2px 4px black);
       }
 
       .shadow {
@@ -65,12 +66,24 @@
         font-weight: bold;
         opacity: 0.75;
       }
+
+      .button-container a {
+        position: absolute;
+        left: 24px;
+        bottom: 24px;
+        background: white;
+        padding: 0.5em 2em;
+        border-radius: 8px;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+      }
     </style>
   </head>
   <body>
     <div class="user-cards"></div>
     <div id="template"></div>
-
+    <div class="button-container">
+      <a onclick="openStreamkit()">Open Streamkit</a>
+    </div>
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
       integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -88,6 +101,13 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"
+      integrity="sha512-zoJXRvW2gC8Z0Xo3lBbao5+AS3g6YWr5ztKqaicua11xHo+AvE1b0lT9ODgrHTmNUxeCw0Ry4BGRYZfXu70weg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
     <script>
       function pad(str, max) {
         str = str.toString();
@@ -102,6 +122,58 @@
         }
         return decodeURI(results[1]) || 0;
       };
+      var streamkit = null;
+      var socket = null;
+
+      function messageListener(event) {
+        if (event.data == "ready") {
+          streamkit.postMessage("hello second page", "*");
+          socket.emit("dffvtt", "initialised");
+        }
+
+        if (event.data.evt == "SPEAKING_START") {
+          $("#" + event.data.user_id).addClass("active");
+          socket.emit("dffvtt", {
+            id: event.data.user_id,
+            state: "SPEAKING_START",
+          });
+        }
+
+        if (event.data.evt == "SPEAKING_STOP") {
+          $("#" + event.data.user_id).removeClass("active");
+          socket.emit("dffvtt", {
+            id: event.data.user_id,
+            state: "SPEAKING_STOP",
+          });
+        }
+      }
+
+      function openStreamkit() {
+        streamkit = window.open(
+          "https://streamkit.discord.com/overlay/voice/1098091204870152202/1098091205369282593"
+        );
+      }
+
+      $(function () {
+        socket = io.connect("http://localhost:30001");
+
+        socket.on("dffvtt", function (msg) {
+          if (msg.state == "SPEAKING_START") {
+            $("#" + msg.id).addClass("active");
+          }
+
+          if (msg.state == "SPEAKING_STOP") {
+            $("#" + msg.id).removeClass("active");
+          }
+          console.log(msg);
+        });
+
+        if ($.urlParam("active")) {
+          console.log("active mode");
+        }
+
+        window.addEventListener("message", messageListener, false);
+      });
     </script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"

@@ -63,6 +63,29 @@ class APIModule {
             "#660099",
             "#6600CC" 
           ];
+
+          var actor_ids = {
+            'y9aV9cZ5GPWNcbp3': {
+                'name': 'Vignesh',
+                'id': '175113813950070784', //726337824399556708
+            },
+            'KUtCVLbOpGt5CLBC': {
+                'name': 'Roi',
+                'id': '376632820065370113',
+            },
+            'YdVU1b1Ja5IuTV5d': {
+                'name': 'Sassy',
+                'id': '314476419981901838',
+            },
+            'gIvtWdi8SvixmwdV': {
+                'name': 'RP',
+                'id': '863099507629359104',
+            },
+            '9jnA3mgrmjCTH23l': {
+                'name': 'Rigbyte',
+                'id': '437161594515095553',
+            },
+        }
         
         var old_template = 
         `<div class="character-card active">
@@ -568,7 +591,7 @@ class APIModule {
         </div>`
 
         var template = 
-        `<div class="character-card active">
+        `<div class="character-card">
         <?xml version="1.0" encoding="utf-8"?>
         <!-- Generator: Adobe Illustrator 28.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -831,6 +854,7 @@ class APIModule {
                 var race_and_class = actor['system']['details']['race'] + ' ';
                 var levels = 0;
                 var ac = 0;
+                var card_id = actor['_id'];
                 actor['items'].forEach(item => {
                     if(item['type'] == 'class') {
                         race_and_class += item['name'] + ' ';
@@ -839,6 +863,10 @@ class APIModule {
 
                     if(item['type'] == 'equipment' && item['system']['equipped']) {
                         ac += item['system']['armor']['value'];
+                    }
+
+                    if (actor_ids[card_id] !== undefined) {
+                        card_id = actor_ids[card_id]['id'];
                     }
                 });
 
@@ -867,6 +895,29 @@ class APIModule {
                 var token_url = '/'+actor['prototypeToken']['texture']['src'];
                 $('#template').find('#inserted-image').css('background-image', 'url("'+token_url+'")');
                 // $('#template').find('.character-card').css('transform', 'scale(0.9)');
+                $('#template').find('.character-card').attr('id', card_id);
+                let params = {}
+                try {
+                    let search = window.location.search;
+                    if (search[0] === '?')
+                        search = search.slice(1);
+                    for (let query of search.split("&")) {
+                        let [key, value] = query.split("=");
+                        value = decodeURIComponent(value);
+                        try {
+                            params[key] = JSON.parse(value);
+                        } catch (err) {
+                            params[key] = value;
+                        }
+                    }
+                } catch (err) {
+                    return this.error("Error parsing query string")
+                }
+                
+                if(params['active'] !== undefined) {
+                    $('#template').find('.character-card').addClass('active');
+                }
+                
                 $('.user-cards').append($('#template').html());
                 $('#template').empty();
             }
