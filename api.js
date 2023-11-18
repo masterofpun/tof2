@@ -23,8 +23,10 @@ class APIModule {
 
     reply(result) {
         this.socket.close();
+
         console.log(result['result'][0]['actors']);
-        var actors = result['result'][0]['actors']; 
+        var actors = result['result'][0]['actors'];
+        var combat = result['result'][0]['combats'][0];
         
         var colorss = [
             "#FFEB3B", // Yellow
@@ -67,7 +69,7 @@ class APIModule {
           var actor_ids = {
             'y9aV9cZ5GPWNcbp3': {
                 'name': 'Vignesh',
-                'id': '175113813950070784', //726337824399556708
+                'id': '726337824399556708', //175113813950070784
             },
             'KUtCVLbOpGt5CLBC': {
                 'name': 'Roi',
@@ -844,17 +846,25 @@ class APIModule {
         </svg>
 
         <div class="photo" id="inserted-image"></div>
+        <div class="initiative_wrapper">
+            <div class="initiative badge gold">
+                <span></span>
+                <div class="ribbon">Initiative</div>
+            </div>
+        </div>
         <div id="character-name">Nameguy Nameson [he/him]</div>
         </div>`;
+
+        var color_map = {};
 
         actors.forEach(function(actor, index) {
             if (actor['type'] == 'character') {
                 var temp = template.replaceAll('primary-color', colors[index]);
-                console.log(colors[index]);
                 var race_and_class = actor['system']['details']['race'] + ' ';
                 var levels = 0;
                 var ac = 0;
                 var card_id = actor['_id'];
+                color_map[card_id] = colors[index];
                 actor['items'].forEach(item => {
                     if(item['type'] == 'class') {
                         race_and_class += item['name'] + ' ';
@@ -892,7 +902,8 @@ class APIModule {
                 $('#template').find('#INT').text('INT ' + String('  ' + actor['system']['abilities']['int']['value']).slice(-2));
                 $('#template').find('#WIS').text('WIS ' + String('  ' + actor['system']['abilities']['wis']['value']).slice(-2));
                 $('#template').find('#CHA').text('CHA ' + String('  ' + actor['system']['abilities']['cha']['value']).slice(-2));
-                var token_url = '/'+actor['prototypeToken']['texture']['src'];
+                //var token_url = '/'+actor['prototypeToken']['texture']['src'];
+                var token_url = '/'+actor['img'];
                 $('#template').find('#inserted-image').css('background-image', 'url("'+token_url+'")');
                 // $('#template').find('.character-card').css('transform', 'scale(0.9)');
                 $('#template').find('.character-card').attr('id', card_id);
@@ -922,40 +933,25 @@ class APIModule {
                 $('#template').empty();
             }
         });
-        
+
+        var $head = $("head");
+
+        if(combat['active']) {
+            combat['combatants'].forEach(function(actor, index) {
+                if(actor_ids[actor['actorId']] !== undefined) {
+                    var ini = $('#'+actor_ids[actor['actorId']]['id']).find('.initiative_wrapper');
+                    ini.show();
+                    ini.find('span').text(actor['initiative']);
+                }
+            });
+        }
     }
 
     processRequest() {
         if (!this.sessionId)
             return this.error("User not logged in")
         let params = {}
-        try {
-            let search = window.location.search;
-            if (search[0] === '?')
-                search = search.slice(1);
-            for (let query of search.split("&")) {
-                let [key, value] = query.split("=");
-                value = decodeURIComponent(value);
-                try {
-                    params[key] = JSON.parse(value);
-                } catch (err) {
-                    params[key] = value;
-                }
-            }
-        } catch (err) {
-            return this.error("Error parsing query string")
-        }
-
-        //if (params.name === undefined)
-        //    return this.error("API use requires query string 'name'")
         let args = [];
-        for (let i = 0; i < 10; i++ ) {
-            if (params[`arg${i}`] !== undefined)
-                args.push(params[`arg${i}`]);
-            else
-                break;
-        }
-        console.log("Got request with params : ", params, args)
         this.socket.emit('world', ...args, (...args) => {
             return this.reply({query: params, result: args, success: true})
         });

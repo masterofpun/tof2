@@ -76,6 +76,166 @@
         border-radius: 8px;
         filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
       }
+
+      .initiative_old {
+        position: absolute;
+        left: 37px;
+        top: 37px;
+        padding: 0.5em;
+        border-radius: 36px;
+        z-index: 10;
+        font-size: 20px;
+        width: 28px;
+        height: 28px;
+        text-align: center;
+        font-weight: bold;
+        color: white;
+      }
+
+      .initiative_before:before {
+        content: " ";
+        width: 0;
+        height: 0;
+        border-bottom: 30px solid #6c6;
+        border-left: 52px solid transparent;
+        border-right: 52px solid transparent;
+        position: absolute;
+        top: -30px;
+      }
+
+      .initiative_before {
+        margin-top: 30px;
+        width: 104px;
+        height: 60px;
+        position: absolute;
+        top: 35px;
+        left: 35px;
+        z-index: 1;
+        background-color: #6c6;
+      }
+
+      .initiative_before:after {
+        content: "";
+        width: 0;
+        position: absolute;
+        bottom: -30px;
+        border-top: 30px solid #6c6;
+        border-left: 52px solid transparent;
+        border-right: 52px solid transparent;
+      }
+
+      .hex {
+        content: "";
+        position: absolute;
+        top: 35px;
+        left: 35px;
+        width: 52px;
+        height: 52px;
+        border-radius: 40px;
+        z-index: 1;
+        display: block;
+        background: radial-gradient(
+            ellipse farthest-corner at right bottom,
+            #fedb37 0%,
+            #fdb931 8%,
+            #9f7928 30%,
+            #8a6e2f 40%,
+            transparent 80%
+          ),
+          radial-gradient(
+            ellipse farthest-corner at left top,
+            #ffffff 0%,
+            #ffffac 8%,
+            #d1b464 25%,
+            #5d4a1f 62.5%,
+            #5d4a1f 100%
+          );
+      }
+
+      .badge {
+        position: relative;
+        margin: 1.5em 3em;
+        width: 4em;
+        height: 6.2em;
+        border-radius: 10px;
+        display: inline-block;
+        top: 0;
+        transition: all 0.2s ease;
+      }
+      .badge:before,
+      .badge:after {
+        position: absolute;
+        width: inherit;
+        height: inherit;
+        border-radius: inherit;
+        background: inherit;
+        content: "";
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        animation: glowing 10s infinite;
+      }
+      .badge:before {
+        transform: rotate(60deg);
+      }
+      .badge:after {
+        transform: rotate(-60deg);
+      }
+      .orange {
+        background: linear-gradient(to bottom right, #ffc107 0%, #f57c00 100%);
+        color: #f68401;
+      }
+
+      .badge .ribbon {
+        position: absolute;
+        border-radius: 4px;
+        padding: 5px 5px 4px;
+        width: 100px;
+        z-index: 11;
+        color: #fff;
+        bottom: 8px;
+        left: 50%;
+        margin-left: -55px;
+        height: 16px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.27);
+        text-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+        text-transform: uppercase;
+        background: linear-gradient(to bottom right, #555 0%, #333 100%);
+        cursor: default;
+        text-align: center;
+        font-size: 16px;
+        padding-bottom: 8px;
+        line-height: 16px;
+      }
+
+      .initiative.badge span {
+        font-size: 48px;
+        min-width: 64px;
+        position: absolute;
+        left: -1px;
+        z-index: 11;
+        color: white;
+        font-weight: bold;
+        top: 8px;
+        text-align: center;
+      }
+
+      .gold {
+        background: linear-gradient(to bottom right, #e6ce6a 0%, #b7892b 100%);
+        color: #b7892b;
+      }
+
+      .initiative_wrapper {
+        transform: scale(0.7);
+        position: absolute;
+        left: -36px;
+        z-index: 4;
+        top: -36px;
+        display: none;
+        filter: drop-shadow(0 2px 4px #574504);
+      }
     </style>
   </head>
   <body>
