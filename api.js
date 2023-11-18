@@ -26,7 +26,7 @@ class APIModule {
 
         console.log(result['result'][0]['actors']);
         var actors = result['result'][0]['actors'];
-        var combat = result['result'][0]['combats'][0];
+        var combat = result['result'][0]['combats'];
         
         var colorss = [
             "#FFEB3B", // Yellow
@@ -856,15 +856,18 @@ class APIModule {
         </div>`;
 
         var color_map = {};
-
+        var color_index = 0;
         actors.forEach(function(actor, index) {
             if (actor['type'] == 'character') {
-                var temp = template.replaceAll('primary-color', colors[index]);
+                
+                console.log(colors[color_index]);
+                var temp = template.replaceAll('primary-color', colors[color_index]);
+
                 var race_and_class = actor['system']['details']['race'] + ' ';
                 var levels = 0;
                 var ac = 0;
                 var card_id = actor['_id'];
-                color_map[card_id] = colors[index];
+                color_map[card_id] = colors[color_index];
                 actor['items'].forEach(item => {
                     if(item['type'] == 'class') {
                         race_and_class += item['name'] + ' ';
@@ -893,7 +896,7 @@ class APIModule {
                 $('#template').find('#class').text(race_and_class.trim());
                 $('#template').find('#level').text('Level ' + levels);
                 $('#template').find('#character-name').text(actor['prototypeToken']['name']);
-                $('#template').find('#character-name').css('background-color', colors[index]);
+                $('#template').find('#character-name').css('background-color', colors[color_index]);
                 $('#template').find('#AC-stat').text(String('  ' + ac).slice(-2));
                 $('#template').find('#HP-stat').text(String('  ' + hp).slice(-3));
                 $('#template').find('#STR').text('STR ' + String('  ' + actor['system']['abilities']['str']['value']).slice(-2));
@@ -931,13 +934,16 @@ class APIModule {
                 
                 $('.user-cards').append($('#template').html());
                 $('#template').empty();
+                
+                color_index += 1;
             }
         });
 
         var $head = $("head");
 
-        if(combat['active']) {
-            combat['combatants'].forEach(function(actor, index) {
+        var color_index = 0;
+        if(combat.length > 0 && combat[0]['active']) {
+            combat[0]['combatants'].forEach(function(actor, index) {
                 if(actor_ids[actor['actorId']] !== undefined) {
                     var ini = $('#'+actor_ids[actor['actorId']]['id']).find('.initiative_wrapper');
                     ini.show();

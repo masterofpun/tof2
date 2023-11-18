@@ -309,8 +309,10 @@
       }
 
       function openStreamkit() {
+        let streamkitLink = prompt("Please enter Streamkit link", 'https://streamkit.discord.com/overlay/voice/1021736656979644456/1021736657420038228');
+
         streamkit = window.open(
-          "https://streamkit.discord.com/overlay/voice/1098091204870152202/1098091205369282593"
+            streamkitLink
         );
       }
 
